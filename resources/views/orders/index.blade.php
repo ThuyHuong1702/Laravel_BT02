@@ -4,6 +4,18 @@
 
 @section('content')
 <a href="{{ route('orders.create') }}" class="btn btn-primary mb-3">Thêm mới đơn hàng</a>
+
+<form action="{{ route('orders.search') }}" method="GET">
+    @csrf
+    <label for="order_date">Ngày đặt hàng:</label>
+    <input type="date" name="order_date" required>
+
+    <label for="employee_id">Mã nhân viên:</label>
+    <input type="number" name="employee_id" required>
+
+    <button type="submit">Tìm kiếm</button>
+</form>
+
 <table class="table table-bordered">
     <thead class="table-dark">
         <tr>

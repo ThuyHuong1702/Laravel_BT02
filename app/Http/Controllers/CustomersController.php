@@ -14,8 +14,8 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $customer = DB::table('customers')->paginate(2);
-        return view('customers.index', compact('customer'));
+        $customers = DB::table('customers')->paginate(2);
+        return view('customers.index', compact('customers'));
     }
 
     /**
@@ -89,4 +89,17 @@ class CustomersController extends Controller
 
         return redirect()->route('customers.index')->with('success', 'Khách hàng đã được xóa thành công!');
     }
+
+    public function searchCustomersWithOrders()
+    {
+        $customers = DB::table('customers')
+            ->join('orders', 'customers.customer_id', '=', 'orders.customer_id')
+            ->select('customers.customer_id', 'customers.name', 'customers.email', 'customers.phone', DB::raw('COUNT(orders.order_id) as total_orders'))
+            ->groupBy('customers.customer_id', 'customers.name', 'customers.email', 'customers.phone')
+            ->havingRaw('COUNT(orders.order_id) >= 3')
+            ->paginate(10); // Phân trang, mỗi trang hiển thị 10 khách hàng
+
+        return view('customers.index', compact('customers'));
+    }
+
 }

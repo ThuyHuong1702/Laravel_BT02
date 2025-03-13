@@ -85,4 +85,33 @@ class OrdersController extends Controller
     {
         //
     }
+
+    public function searchOrders(Request $request)
+    {
+        // Lấy dữ liệu từ form
+        $orderDate = $request->input('order_date');
+        $employeeId = $request->input('employee_id');
+
+        // Kiểm tra nếu người dùng không nhập giá trị tìm kiếm
+        if (!$orderDate || !$employeeId) {
+            return redirect()->route('orders.index')->with('error', 'Vui lòng nhập đầy đủ thông tin tìm kiếm.');
+        }
+
+        // Truy vấn dữ liệu từ database
+        $orders = DB::table('orders')
+            ->join('customers', 'orders.customer_id', '=', 'customers.customer_id')
+            ->join('employees', 'orders.employee_id', '=', 'employees.employee_id')
+            ->select(
+                'orders.order_id',
+                'customers.name as customer_name',
+                'orders.order_date',
+                'employees.name as employee_name'
+            )
+            ->whereDate('orders.order_date', '=', $orderDate)
+            ->where('orders.employee_id', '=', $employeeId)
+            ->paginate(10); // Dùng phân trang để tránh load quá nhiều dữ liệu
+
+        return view('orders.index', compact('orders'));
+    }
+
 }

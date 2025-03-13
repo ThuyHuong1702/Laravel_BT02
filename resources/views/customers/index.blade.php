@@ -4,7 +4,7 @@
 
 @section('content')
 <a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">Thêm mới khách hàng</a>
-
+<a href="{{ route('customers.orders') }}" class="btn btn-primary">Khách hàng có từ 3 đơn hàng</a>
 <table class="table table-bordered">
     <thead class="table-dark">
         <tr>
@@ -16,7 +16,7 @@
         </tr>
     </thead>
 <tbody>
-    @foreach($customer as $cus)
+    @foreach($customers as $cus)
     <tr>
         <td>{{ $cus->customer_id }}</td>
         <td>{{ $cus->name }}</td>
@@ -37,6 +37,6 @@
 </tbody>
 </table>
 <!-- Hiển thị nút chuyển trang -->
-{{ $customer->links('pagination::bootstrap-5') }}
+{{ $customers->links('pagination::bootstrap-5') }}
 @endsection
 

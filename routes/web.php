@@ -29,3 +29,8 @@ Route::get('/orderDetail', [OrderDetailsController::class, 'index'])->name('orde
 
 Route::get('/orderDetail/edit/{order_id}/{product_id}', [OrderDetailsController::class, 'edit'])->name('orderDetail.edit');
 Route::put('/orderDetail/edit/{order_id}/{product_id}', [OrderDetailsController::class, 'update'])->name('orderDetail.update');
+
+
+Route::get('/customers/orders', [CustomersController::class, 'searchCustomersWithOrders'])->name('customers.orders');
+
+Route::get('/orders/search', [OrdersController::class, 'searchOrders'])->name('orders.search');
